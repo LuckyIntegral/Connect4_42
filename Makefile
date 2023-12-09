@@ -21,6 +21,7 @@ LIBFT		= ${LIBDIR}/libft.a
 NAME		= connect4
 SRCSDIR		= srcs
 SRCS		= \
+			${SRCSDIR}/init.c \
 			${SRCSDIR}/main.c
 
 OBJSDIR		= ${SRCSDIR}/objs
