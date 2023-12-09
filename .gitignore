@@ -1,0 +1,9 @@
+.nfs*
+.vscode
+
+libft/objs
+libft/libft.a
+srcs/objs
+connect4
+srcs_bonus/objs
+connect4_bonus
