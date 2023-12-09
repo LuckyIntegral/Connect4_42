@@ -186,9 +186,9 @@ t_score	*minimax(t_game *game, int depth, char maximizing_player)
 		if (end)
 		{
 			if (winning_move(game, PLAYER1))
-				score->score = INT_MIN;
-			else if (winning_move(game, PLAYER2))
 				score->score = INT_MAX;
+			else if (winning_move(game, PLAYER2))
+				score->score = INT_MIN;
 			return (score);
 		}
 		score->score = score_position(game, maximizing_player);
@@ -203,17 +203,17 @@ t_score	*minimax(t_game *game, int depth, char maximizing_player)
 	if (maximizing_player == PLAYER1)
 	{
 		// TODO: choose random
-		t_score *max_score = random_move(possible);
-		if (!max_score)
-			return (free(possible), NULL);
-		// t_score *max_score = NULL;
+		// t_score *max_score = random_move(possible);
+		// if (!max_score)
+			// return (free(possible), NULL);
+		t_score *max_score = NULL;
 		for (int i = 0; possible[i] != -1; i++)
 		{
 			t_game *copy = clone_game(game);
 			if (!copy)
 				return (free(possible), free(max_score), NULL);
 			drop_player(copy, possible[i], maximizing_player);
-			t_score *eval = minimax(copy, depth - 1, maximizing_player);
+			t_score *eval = minimax(copy, depth - 1, PLAYER2);
 			if (!eval)
 				return (free(possible), free(max_score), NULL);
 			if (max_score && eval->score < max_score->score)
@@ -229,10 +229,10 @@ t_score	*minimax(t_game *game, int depth, char maximizing_player)
 		return (free(possible), max_score);
 	}
 	// TODO: choose random
-	t_score *min_score = random_move(possible);
-	if (!min_score)
-		return (free(possible), NULL);
-	// t_score *min_score = NULL;
+	// t_score *min_score = random_move(possible);
+	// if (!min_score)
+		// return (free(possible), NULL);
+	t_score *min_score = NULL;
 	for (int i = 0; possible[i] != -1; i++)
 	{
 		// printf("Posib %i\n", possible[i]);
@@ -240,7 +240,7 @@ t_score	*minimax(t_game *game, int depth, char maximizing_player)
 		if (!copy)
 			return (free(possible), free(min_score), NULL);
 		drop_player(copy, possible[i], maximizing_player);
-		t_score *eval = minimax(copy, depth - 1, maximizing_player);
+		t_score *eval = minimax(copy, depth - 1, PLAYER1);
 		if (!eval)
 			return (free(possible), free(min_score), NULL);
 		if (min_score && eval->score > min_score->score)
