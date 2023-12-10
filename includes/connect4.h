@@ -39,3 +39,8 @@ int		ai_turn(t_game *game, char player);
 
 // moves.c
 void	add_move(t_game *game, int move, char player);
+
+
+// validation_win.c
+int is_game_over(t_game *game);
+int is_draw(t_game *game);
