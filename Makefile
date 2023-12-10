@@ -87,10 +87,12 @@ ${OBJSDIR}/%.o		: ${SRCSDIR}/%.c
 
 clean				:
 		make --no-print-directory -C ${LIBDIR} clean
+		make --no-print-directory -C ${RAYLIBDIR} clean
 		$(RM) $(OBJSDIR) $(OBJSDIR_B)
 
 fclean				:
 		make --no-print-directory -C ${LIBDIR} fclean
+		make --no-print-directory -C ${RAYLIBDIR} clean
 		$(RM) $(OBJSDIR) $(OBJSDIR_B) $(NAME) $(NAME_B)
 
 re					: fclean all

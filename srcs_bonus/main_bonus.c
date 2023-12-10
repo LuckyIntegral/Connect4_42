@@ -143,8 +143,8 @@ void	draw_game_winner(char winner, char ai_player, int screen_width, int screen_
     };
 
     DrawRectangle(
-        position.x - paddingX / 2,
-        position.y - paddingY / 2,
+        position.x - (float) paddingX / 2,
+        position.y - (float) paddingY / 2,
         textSize.x + paddingX * 2,
         textSize.y + paddingY,
         winner == ai_player ? RED : GREEN
@@ -157,24 +157,21 @@ int bonus_main(char **argv)
 {
 	t_game game;
 
-	// TODO: if graphical is not enabled use the normal one
-	// TODO: Make the limit of columns and lines smaller than current
-	// TODO: Make window size dynamic based on columns and lines
 	if (init_game(&game, argv[1], argv[2]))
 		return (1);
 
-    int screenWidth = 800;
-    int screenHeight = 450;
-
     SetTraceLogLevel(LOG_ERROR);
+	float chips_width = (game.columns + 1) * CIRCLE_DISTANCE + game.columns * (CIRCLE_RADIUS * 2);
+	float chips_height = (game.lines + 1) * CIRCLE_DISTANCE + game.lines * (CIRCLE_RADIUS * 2);
+
+    int screenWidth = ft_max(800, chips_width + 100);
+    int screenHeight = ft_max(450, chips_height + 200);
     InitWindow(screenWidth, screenHeight, "Connect 4");
 
 	RenderTexture2D board = create_board(&game, screenWidth);
 	float card_width = board.texture.width;
 	RenderTexture2D pointer = create_position_pointer();
 
-	float chips_width = (game.columns + 1) * CIRCLE_DISTANCE + game.columns * (CIRCLE_RADIUS * 2);
-	float chips_height = (game.lines + 1) * CIRCLE_DISTANCE + game.lines * (CIRCLE_RADIUS * 2);
 	RenderTexture2D chips = LoadRenderTexture(chips_width, chips_height);
 
     SetTargetFPS(30);
