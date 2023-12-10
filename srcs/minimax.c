@@ -1,16 +1,11 @@
 #include "../includes/connect4.h"
 
-// TODO: Remove
-#include <stdbool.h>
-#include <stdio.h>
-
 typedef struct s_score
 {
 	int	score;
 	int	column;
 }	t_score;
 
-static bool			is_row_empty(char *row);
 static int			count_center_pieces(t_game *game, char player);
 static int			score_position(t_game *game, char player);
 static int			score_window(char *window);
@@ -68,32 +63,16 @@ int	ai(t_game *game, char player)
 	(void) player;
 	srand(time(NULL));
 
-	// int score = score_position(game, player);
-	// printf("SCORE: %i\n", score);
-	if (is_row_empty(game->board[game->lines - 1]))
+	if (!ft_strchr(game->board[game->lines - 1], PLAYER1)
+		&& !ft_strchr(game->board[game->lines - 1], PLAYER2)
+	)
 	{
 		int column = rand() % game->lines;
-		// drop_player(game, column, player);
 		return (column);
 	}
-	// 	return (rand() % game->lines);
 	t_score *score = minimax(game, 3, player);
-	// drop_player(game, score->column, player);
 	int column = score->column;
-	printf("Score: %i Move: %i\n", score->score, score->column);
 	return (free(score), column);
-}
-
-t_score	*random_move(int *moves)
-{
-	t_score *score = ft_calloc(1, sizeof(t_score));
-	if (!score)
-		return (NULL);
-	int	len = 0;
-	while (moves[len] != -1)
-		len++;
-	score->column = moves[rand() % len];
-	return (score);
 }
 
 bool	winning_move(t_game *game, char player)
@@ -162,16 +141,8 @@ bool	is_end(t_game *game)
 	return (winning_move(game, PLAYER1) || winning_move(game, PLAYER2));
 }
 
-// def is_terminal_node(board):
-//     return winning_move(board, PLAYER_PIECE) or winning_move(board, BOT_PIECE) or len(get_valid_locations(board)) == 0
-
-
 t_score	*minimax(t_game *game, int depth, char maximizing_player)
 {
-	// t_score	*score = ft_calloc(1, sizeof(t_score));
-	// if (!score)
-	// 	return (NULL);
-
 	bool end = is_end(game);
 	if (depth == 0 || end)
 	{
@@ -197,10 +168,6 @@ t_score	*minimax(t_game *game, int depth, char maximizing_player)
 
 	if (maximizing_player == PLAYER1)
 	{
-		// TODO: choose random
-		// t_score *max_score = random_move(possible);
-		// if (!max_score)
-			// return (free(possible), NULL);
 		t_score *max_score = NULL;
 		for (int i = 0; possible[i] != -1; i++)
 		{
@@ -221,17 +188,11 @@ t_score	*minimax(t_game *game, int depth, char maximizing_player)
 			eval->column = possible[i];
 			max_score = eval;
 		}
-		// printf("Max: %i %i\n", max_score->score, max_score->column);
 		return (free(possible), max_score);
 	}
-	// TODO: choose random
-	// t_score *min_score = random_move(possible);
-	// if (!min_score)
-		// return (free(possible), NULL);
 	t_score *min_score = NULL;
 	for (int i = 0; possible[i] != -1; i++)
 	{
-		// printf("Posib %i\n", possible[i]);
 		t_game *copy = clone_game(game);
 		if (!copy)
 			return (free(possible), free(min_score), NULL);
@@ -249,7 +210,6 @@ t_score	*minimax(t_game *game, int depth, char maximizing_player)
 		eval->column = possible[i];
 		min_score = eval;
 	}
-	// printf("Max: %i %i\n", min_score->score, min_score->column);
 	return (free(possible), min_score);
 }
 
@@ -385,13 +345,3 @@ static int	count_center_pieces(t_game *game, char player)
 	return (count);
 }
 
-static bool	is_row_empty(char *row)
-{
-	while (*row)
-	{
-		if (*row != EMPTY)
-			return (false);
-		row++;
-	}
-	return (true);
-}
