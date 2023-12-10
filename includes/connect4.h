@@ -35,4 +35,7 @@ typedef struct	s_game
 int		init_game(t_game *game, char *lines, char *columns);
 
 // Functinos to calculate the next AI move
-int		ai(t_game *game, char player);
+int		ai_turn(t_game *game, char player);
+
+// moves.c
+void	add_move(t_game *game, int move, char player);

@@ -5,6 +5,7 @@ void	add_move(t_game *game, int move, char player);
 void	print_board(t_game *game);
 int		is_valid_number(char *str);
 int		player_turn(t_game *game);
+int 	is_game_over(t_game *game);
 
 int main(int argc, char **argv)
 {
@@ -26,7 +27,8 @@ int main(int argc, char **argv)
 		add_move(&game, players_move, PLAYER1);
 		if (is_game_over(&game))
 			break ;
-		ai_move = ai_turn(&game);
+		// TODO: check for error
+		ai_move = ai_turn(&game, PLAYER2);
 		add_move(&game, ai_move, PLAYER2);
 	}
 

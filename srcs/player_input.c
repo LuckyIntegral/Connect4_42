@@ -1,6 +1,8 @@
 
 #include "../includes/connect4.h"
 
+int	is_valid_number(char *str);
+
 int	player_turn(t_game *game)
 {
 	char	*line;

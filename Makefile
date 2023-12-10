@@ -21,9 +21,13 @@ LIBFT		= ${LIBDIR}/libft.a
 NAME		= connect4
 SRCSDIR		= srcs
 SRCS		= \
+			${SRCSDIR}/display.c \
 			${SRCSDIR}/init.c \
 			${SRCSDIR}/main.c \
-			${SRCSDIR}/minimax.c
+			${SRCSDIR}/minimax.c \
+			${SRCSDIR}/moves.c \
+			${SRCSDIR}/player_input.c \
+			${SRCSDIR}/validation_win.c \
 
 OBJSDIR		= ${SRCSDIR}/objs
 DEPS		= $(SRCS:${SRCSDIR}/%.c=${OBJSDIR}/%.d)

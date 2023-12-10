@@ -6,10 +6,6 @@ typedef struct s_score
 	int	column;
 }	t_score;
 
-static int			score_position(t_game *game, char player);
-static t_score		*minimax(t_game *game, int depth, char maximizing_player);
-static int			*possible_moves(t_game *game);
-
 static void	free_game(t_game *game)
 {
 	if (!game)
@@ -43,34 +39,23 @@ static t_game	*clone_game(t_game *game)
 	return (clone);
 }
 
-void	drop_player(t_game *game, int column, char player)
+static int	*possible_moves(t_game *game)
 {
-	if (column < 0 || column >= game->columns)
-		return ;
+	int	*moves = ft_calloc(game->columns + 1, sizeof(int));
+	if (!moves)
+		return (NULL);
 
-	int i = game->lines - 1;
-	while (i >= 0 && game->board[i][column] != EMPTY)
-		i--;
-	if (i < 0)
-		return ;
-	game->board[i][column] = player;
-}
-
-int	ai(t_game *game, char player)
-{
-	(void) player;
-	srand(time(NULL));
-
-	if (!ft_strchr(game->board[game->lines - 1], PLAYER1)
-		&& !ft_strchr(game->board[game->lines - 1], PLAYER2)
-	)
+	int i = 0;
+	for (int column = 0; column < game->columns; column++)
 	{
-		int column = rand() % game->lines;
-		return (column);
+		if (game->board[0][column] != EMPTY)
+			continue ;
+		moves[i] = column;
+		i++;
 	}
-	t_score *score = minimax(game, 3, player);
-	int column = score->column;
-	return (free(score), column);
+	moves[i] = -1;
+
+	return (moves);
 }
 
 bool	winning_move(t_game *game, char player)
@@ -137,98 +122,6 @@ bool	is_end(t_game *game)
 		return (free(possible), true);
 	free(possible);
 	return (winning_move(game, PLAYER1) || winning_move(game, PLAYER2));
-}
-
-t_score	*minimax(t_game *game, int depth, char maximizing_player)
-{
-	bool end = is_end(game);
-	if (depth == 0 || end)
-	{
-		t_score	*score = ft_calloc(1, sizeof(t_score));
-		if (!score)
-			return (NULL);
-		if (end)
-		{
-			if (winning_move(game, PLAYER1))
-				score->score = INT_MAX;
-			else if (winning_move(game, PLAYER2))
-				score->score = INT_MIN;
-			return (score);
-		}
-		score->score = score_position(game, maximizing_player);
-		return (score);
-	}
-
-
-	int	*possible = possible_moves(game);
-	if (!possible)
-		return (NULL);
-
-	if (maximizing_player == PLAYER1)
-	{
-		t_score *max_score = NULL;
-		for (int i = 0; possible[i] != -1; i++)
-		{
-			t_game *copy = clone_game(game);
-			if (!copy)
-				return (free(possible), free(max_score), NULL);
-			drop_player(copy, possible[i], maximizing_player);
-			t_score *eval = minimax(copy, depth - 1, PLAYER2);
-			free_game(copy);
-			if (!eval)
-				return (free(possible), free(max_score), NULL);
-			if (max_score && eval->score < max_score->score)
-			{
-				free(eval);
-				continue ;
-			}
-			free(max_score);
-			eval->column = possible[i];
-			max_score = eval;
-		}
-		return (free(possible), max_score);
-	}
-
-	t_score *min_score = NULL;
-	for (int i = 0; possible[i] != -1; i++)
-	{
-		t_game *copy = clone_game(game);
-		if (!copy)
-			return (free(possible), free(min_score), NULL);
-		drop_player(copy, possible[i], maximizing_player);
-		t_score *eval = minimax(copy, depth - 1, PLAYER1);
-		free_game(copy);
-		if (!eval)
-			return (free(possible), free(min_score), NULL);
-		if (min_score && eval->score > min_score->score)
-		{
-			free(eval);
-			continue ;
-		}
-		free(min_score);
-		eval->column = possible[i];
-		min_score = eval;
-	}
-	return (free(possible), min_score);
-}
-
-static int	*possible_moves(t_game *game)
-{
-	int	*moves = ft_calloc(game->columns + 1, sizeof(int));
-	if (!moves)
-		return (NULL);
-
-	int i = 0;
-	for (int column = 0; column < game->columns; column++)
-	{
-		if (game->board[0][column] != EMPTY)
-			continue ;
-		moves[i] = column;
-		i++;
-	}
-	moves[i] = -1;
-
-	return (moves);
 }
 
 # define WINDOW_LEN (4)
@@ -342,4 +235,96 @@ static int	score_position(t_game *game, char player)
 	}
 
 	return (score);
+}
+
+t_score	*minimax(t_game *game, int depth, char maximizing_player)
+{
+	bool end = is_end(game);
+	if (depth == 0 || end)
+	{
+		t_score	*score = ft_calloc(1, sizeof(t_score));
+		if (!score)
+			return (NULL);
+		if (end)
+		{
+			if (winning_move(game, PLAYER1))
+				score->score = INT_MAX;
+			else if (winning_move(game, PLAYER2))
+				score->score = INT_MIN;
+			return (score);
+		}
+		score->score = score_position(game, maximizing_player);
+		return (score);
+	}
+
+
+	int	*possible = possible_moves(game);
+	if (!possible)
+		return (NULL);
+
+	if (maximizing_player == PLAYER1)
+	{
+		t_score *max_score = NULL;
+		for (int i = 0; possible[i] != -1; i++)
+		{
+			t_game *copy = clone_game(game);
+			if (!copy)
+				return (free(possible), free(max_score), NULL);
+			add_move(copy, possible[i], maximizing_player);
+			t_score *eval = minimax(copy, depth - 1, PLAYER2);
+			free_game(copy);
+			if (!eval)
+				return (free(possible), free(max_score), NULL);
+			if (max_score && eval->score < max_score->score)
+			{
+				free(eval);
+				continue ;
+			}
+			free(max_score);
+			eval->column = possible[i];
+			max_score = eval;
+		}
+		return (free(possible), max_score);
+	}
+
+	t_score *min_score = NULL;
+	for (int i = 0; possible[i] != -1; i++)
+	{
+		t_game *copy = clone_game(game);
+		if (!copy)
+			return (free(possible), free(min_score), NULL);
+		add_move(copy, possible[i], maximizing_player);
+		t_score *eval = minimax(copy, depth - 1, PLAYER1);
+		free_game(copy);
+		if (!eval)
+			return (free(possible), free(min_score), NULL);
+		if (min_score && eval->score > min_score->score)
+		{
+			free(eval);
+			continue ;
+		}
+		free(min_score);
+		eval->column = possible[i];
+		min_score = eval;
+	}
+	return (free(possible), min_score);
+}
+
+int	ai_turn(t_game *game, char player)
+{
+	srand(time(NULL));
+
+	if (!ft_strchr(game->board[game->lines - 1], PLAYER1)
+		&& !ft_strchr(game->board[game->lines - 1], PLAYER2)
+	)
+	{
+		int column = rand() % game->lines;
+		return (column);
+	}
+	t_score *score = minimax(game, 3, player);
+	if (!score)
+		return (-1);
+
+	int column = score->column;
+	return (free(score), column);
 }
