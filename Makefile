@@ -14,12 +14,20 @@ LIBDIR		= ./libft
 LIBFT		= ${LIBDIR}/libft.a
 
 ###############################################################################
+######                              RAYLIB                               ######
+###############################################################################
+
+RAYLIBDIR	= ./srcs_bonus/raylib/src
+RAYLIB		= ${RAYLIBDIR}/libraylib.a
+
+###############################################################################
 ######                             MANDATORY                             ######
 ###############################################################################
 
 NAME		= connect4
 SRCSDIR		= srcs
 SRCS		= \
+			${SRCSDIR}/display.c \
 			${SRCSDIR}/init.c \
 			${SRCSDIR}/main.c \
 			${SRCSDIR}/display.c \
@@ -33,6 +41,23 @@ DEPS		= $(SRCS:${SRCSDIR}/%.c=${OBJSDIR}/%.d)
 OBJS		= $(SRCS:${SRCSDIR}/%.c=${OBJSDIR}/%.o)
 
 ###############################################################################
+######                               BONUS                               ######
+###############################################################################
+
+NAME_B		= connect4_bonus
+SRCSDIR_B	= srcs_bonus
+SRCS_B		= \
+			${SRCSDIR_B}/main_bonus.c \
+			${SRCSDIR_B}/moves.c \
+			${SRCSDIR_B}/minimax.c \
+			${SRCSDIR_B}/validation_win.c \
+			${SRCSDIR_B}/init.c
+
+OBJSDIR_B	= ${SRCSDIR_B}/objs
+OBJS_B      = $(SRCS_B:${SRCSDIR_B}/%.c=${OBJSDIR_B}/%.o)
+DEPS_B      = $(SRCS_B:${SRCSDIR_B}/%.c=${OBJSDIR_B}/%.d)
+
+###############################################################################
 ######                               RULES                               ######
 ###############################################################################
 
@@ -41,6 +66,11 @@ all					: $(NAME)
 $(NAME)				: ${OBJS}
 		make --no-print-directory -C ${LIBDIR} all
 		$(CC) $(CFLAGS) -o $@ $^ -L. ${LIBFT}
+
+$(NAME_B)			: ${OBJS_B}
+		make --no-print-directory -C ${LIBDIR} all
+		make --no-print-directory -C ${RAYLIBDIR} PLATFORM=PLATFORM_DESKTOP
+		$(CC) $(CFLAGS) -o $(NAME_B) $^ $(LINKS) -L. ${LIBFT} ${RAYLIB} -lm
 
 ${OBJSDIR}/%.o		: ${SRCSDIR}/%.c
 		@mkdir -p $(dir $@)
