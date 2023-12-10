@@ -49,15 +49,13 @@ int	mandatory_main(char **argv)
 			break ;
 		}
 	}
+	print_board(&game);
 	if (is_draw(&game))
 		ft_putstr_fd("Lol, you did it, THIS IS A DRAW!\n", 1);
 	else if (winner == PLAYER1)
 		ft_putstr_fd("Congrats, you won the game!\n", 1);
 	else if (winner == PLAYER2)
-	{
-		print_board(&game);
 		ft_putstr_fd("You lost after AI last move! Better luck next time!\n", 1);
-	}
 	get_next_line(0, CLEAN);
 	ft_free_split(game.board);
 	return (0);
