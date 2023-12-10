@@ -14,6 +14,8 @@
 # define EMPTY '_'
 # define PLAYER1 'X'
 # define PLAYER2 'O'
+# define PLAYER1_COLOR "🟢"
+# define PLAYER2_COLOR "🟡"
 
 // Maximum number of columns and lines of the terminal window
 # define MAX_COLUMNS 70

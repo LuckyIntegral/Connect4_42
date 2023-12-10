@@ -18,7 +18,7 @@ void	put_header(void)
 void	print_board(t_game *game)
 {
 	ft_putstr_fd("Your colour is ", 1);
-	ft_putstr_fd(game->player_sign == PLAYER1 ? "🟢\n" : "🟡\n", 1);
+	ft_putendl_fd(game->player_sign == PLAYER1 ? PLAYER1_COLOR : PLAYER2_COLOR, 1);
 	for (int i = 0; i < game->lines; i++)
 	{
 		for (int j = 0; j < game->columns; j++)
@@ -33,10 +33,10 @@ void	print_board(t_game *game)
 					ft_putstr_fd("  ", 1);
 					break ;
 				case PLAYER1:
-					ft_putstr_fd("🟢", 1);
+					ft_putstr_fd(PLAYER1_COLOR, 1);
 					break ;
 				case PLAYER2:
-					ft_putstr_fd("🟡", 1);
+					ft_putstr_fd(PLAYER2_COLOR, 1);
 			}
 		}
 		ft_putstr_fd("|\n", 1);
