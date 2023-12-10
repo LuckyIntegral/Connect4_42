@@ -17,6 +17,14 @@ static int			score_window(char *window);
 static t_score		*minimax(t_game *game, int depth, char maximizing_player);
 static int			*possible_moves(t_game *game);
 
+void	free_game(t_game *game)
+{
+	if (!game)
+		return ;
+	ft_free_split(game->board);
+	free(game);
+}
+
 t_game	*clone_game(t_game *game)
 {
 	t_game	*clone = ft_calloc(1, sizeof(t_game));
@@ -40,18 +48,6 @@ t_game	*clone_game(t_game *game)
 		}
 	}
 	return (clone);
-}
-
-void	put_game(t_game *game)
-{
-	printf("======\n");
-	for (int i = 0; i < game->lines; i++)
-	{
-		for (int j = 0; j < game->columns; j++)
-			printf("%c", game->board[i][j]);
-		printf("\n");
-	}
-	printf("======\n");
 }
 
 void	drop_player(t_game *game, int column, char player)
@@ -81,8 +77,7 @@ int	ai(t_game *game, char player)
 		return (column);
 	}
 	// 	return (rand() % game->lines);
-	t_game *clone = clone_game(game);
-	t_score *score = minimax(clone, 3, player);
+	t_score *score = minimax(game, 3, player);
 	// drop_player(game, score->column, player);
 	int column = score->column;
 	printf("Score: %i Move: %i\n", score->score, score->column);
@@ -214,6 +209,7 @@ t_score	*minimax(t_game *game, int depth, char maximizing_player)
 				return (free(possible), free(max_score), NULL);
 			drop_player(copy, possible[i], maximizing_player);
 			t_score *eval = minimax(copy, depth - 1, PLAYER2);
+			free_game(copy);
 			if (!eval)
 				return (free(possible), free(max_score), NULL);
 			if (max_score && eval->score < max_score->score)
@@ -241,6 +237,7 @@ t_score	*minimax(t_game *game, int depth, char maximizing_player)
 			return (free(possible), free(min_score), NULL);
 		drop_player(copy, possible[i], maximizing_player);
 		t_score *eval = minimax(copy, depth - 1, PLAYER1);
+		free_game(copy);
 		if (!eval)
 			return (free(possible), free(min_score), NULL);
 		if (min_score && eval->score > min_score->score)
