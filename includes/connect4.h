@@ -2,14 +2,19 @@
 
 #include "../libft/libft.h"
 
+# include <limits.h>
+# include <stdlib.h>
+# include <stdbool.h>
+# include <time.h>
+
 // Minimum number of columns and lines of the game board
 # define MIN_COLUMNS 7
 # define MIN_LINES 6
 
 // Characters used to represent the game board
-# define EMPTY '.'
-# define PLAYER1 'R'
-# define PLAYER2 'B'
+# define EMPTY '_'
+# define PLAYER1 'X'
+# define PLAYER2 'O'
 
 // Maximum number of columns and lines of the terminal window
 # define MAX_COLUMNS 211
@@ -28,3 +33,6 @@ typedef struct	s_game
 
 // Functions to manipulate the game board
 int		init_game(t_game *game, char *lines, char *columns);
+
+// Functinos to calculate the next AI move
+int		ai(t_game *game, char player);

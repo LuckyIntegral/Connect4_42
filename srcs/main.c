@@ -6,6 +6,8 @@ void	print_board(t_game *game);
 int		is_valid_number(char *str);
 int		player_turn(t_game *game);
 
+void	drop_player(t_game *game, int column, char player);
+
 int main(int argc, char **argv)
 {
 	t_game	game;
@@ -30,7 +32,7 @@ int main(int argc, char **argv)
 		add_move(&game, ai_move, PLAYER2);
 	}
 
-	get_next_line(0, CLEAN);
+
 	ft_free_split(game.board);
 	return (0);
 }

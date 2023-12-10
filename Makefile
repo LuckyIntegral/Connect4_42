@@ -22,7 +22,8 @@ NAME		= connect4
 SRCSDIR		= srcs
 SRCS		= \
 			${SRCSDIR}/init.c \
-			${SRCSDIR}/main.c
+			${SRCSDIR}/main.c \
+			${SRCSDIR}/minimax.c
 
 OBJSDIR		= ${SRCSDIR}/objs
 DEPS		= $(SRCS:${SRCSDIR}/%.c=${OBJSDIR}/%.d)
