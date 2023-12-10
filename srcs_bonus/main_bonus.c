@@ -129,7 +129,7 @@ void	draw_game_winner(char winner, char ai_player, int screen_width, int screen_
 	if (winner == ai_player)
 		text = "You Lost :(";
 	else if (winner == '\0')
-		text = "Lol, you did it, THIS IS A DRAW!";
+		text = "LOL, A DRAW";
 
     int fontSize = 50;
     Vector2 textSize = MeasureTextEx(GetFontDefault(), text, fontSize, 1);
@@ -197,10 +197,9 @@ int bonus_main(char **argv)
 		if (!game_finished && current_player == ai_player)
 		{
 			column = ai_turn(&game, ai_player);
-			// TODO: erorr handling
 			if (column == -1)
 			{
-				printf("EOROR\n");
+				printf("ERROR\n");
 				break ;
 			}
 			add_move(&game, column, current_player);
@@ -221,7 +220,7 @@ int bonus_main(char **argv)
             ClearBackground(RAYWHITE);
 			if (!game_finished)
 			{
-				if (IsKeyReleased(KEY_SPACE) || IsKeyReleased(KEY_DOWN))
+				if ((IsKeyReleased(KEY_SPACE) || IsKeyReleased(KEY_DOWN)) && game.board[0][column] == EMPTY)
 				{
 					add_move(&game, column, current_player);
 					print_board(&game);
