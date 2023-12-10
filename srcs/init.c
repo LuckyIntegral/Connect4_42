@@ -1,7 +1,7 @@
 
 #include "../includes/connect4.h"
 
-static int	is_valid_number(char *str)
+int	is_valid_number(char *str)
 {
 	int	i;
 
