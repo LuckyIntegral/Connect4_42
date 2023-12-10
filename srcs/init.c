@@ -1,11 +1,6 @@
 
 #include "../includes/connect4.h"
 
-void	add_move(t_game *game, int move, char player);
-void	print_board(t_game *game);
-int		is_valid_number(char *str);
-int		player_turn(t_game *game);
-
 int	is_valid_number(char *str)
 {
 	int	i;
