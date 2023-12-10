@@ -20,7 +20,7 @@ int	init_game(t_game *game, char *lines, char *columns)
 {
 	int	i;
 
-	if (ft_strlen(lines) > 2 || ft_strlen(columns) > 3
+	if (ft_strlen(lines) > 2 || ft_strlen(columns) > 2
 		|| !is_valid_number(lines) || !is_valid_number(columns))
 	{
 		ft_putstr_fd("Error: Invalid map size\n", 2);
