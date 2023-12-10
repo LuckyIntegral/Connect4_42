@@ -6,13 +6,11 @@ typedef struct s_score
 	int	column;
 }	t_score;
 
-static int			count_center_pieces(t_game *game, char player);
 static int			score_position(t_game *game, char player);
-static int			score_window(char *window);
 static t_score		*minimax(t_game *game, int depth, char maximizing_player);
 static int			*possible_moves(t_game *game);
 
-void	free_game(t_game *game)
+static void	free_game(t_game *game)
 {
 	if (!game)
 		return ;
@@ -20,7 +18,7 @@ void	free_game(t_game *game)
 	free(game);
 }
 
-t_game	*clone_game(t_game *game)
+static t_game	*clone_game(t_game *game)
 {
 	t_game	*clone = ft_calloc(1, sizeof(t_game));
 	if (!clone)
@@ -190,6 +188,7 @@ t_score	*minimax(t_game *game, int depth, char maximizing_player)
 		}
 		return (free(possible), max_score);
 	}
+
 	t_score *min_score = NULL;
 	for (int i = 0; possible[i] != -1; i++)
 	{
@@ -233,6 +232,55 @@ static int	*possible_moves(t_game *game)
 }
 
 # define WINDOW_LEN (4)
+
+static int	score_window(char *window)
+{
+	int		player1_count = 0;
+	int		player2_count = 0;
+	int		empty_count = 0;
+
+	// Count all pieces
+	while (*window)
+	{
+		if (*window == PLAYER1)
+			player1_count++;
+		else if (*window == PLAYER2)
+			player2_count++;
+		else
+			empty_count++;
+		window++;
+	}
+
+	if (player1_count == 4)
+		return (100);
+	if (player2_count == 4)
+		return (-100);
+
+	if (player1_count == 3 && empty_count == 1)
+		return (50);
+	if (player2_count == 3 && empty_count == 1)
+		return (-50);
+
+	if (player1_count == 2 && empty_count == 2)
+		return (5);
+	if (player2_count == 2 && empty_count == 2)
+		return (-5);
+
+	return (0);
+}
+
+static int	count_center_pieces(t_game *game, char player)
+{
+	int	center = game->columns / 2;
+
+	int	count = 0;
+	for (int row = 0; row < game->lines; row++)
+	{
+		if (game->board[row][center] == player)
+			count++;
+	}
+	return (count);
+}
 
 // TODO: optimize this to skip empty rows
 static int	score_position(t_game *game, char player)
@@ -295,53 +343,3 @@ static int	score_position(t_game *game, char player)
 
 	return (score);
 }
-
-static int	score_window(char *window)
-{
-	int		player1_count = 0;
-	int		player2_count = 0;
-	int		empty_count = 0;
-
-	// Count all pieces
-	while (*window)
-	{
-		if (*window == PLAYER1)
-			player1_count++;
-		else if (*window == PLAYER2)
-			player2_count++;
-		else
-			empty_count++;
-		window++;
-	}
-
-	if (player1_count == 4)
-		return (100);
-	if (player2_count == 4)
-		return (-100);
-
-	if (player1_count == 3 && empty_count == 1)
-		return (50);
-	if (player2_count == 3 && empty_count == 1)
-		return (-50);
-
-	if (player1_count == 2 && empty_count == 2)
-		return (5);
-	if (player2_count == 2 && empty_count == 2)
-		return (-5);
-
-	return (0);
-}
-
-static int	count_center_pieces(t_game *game, char player)
-{
-	int	center = game->columns / 2;
-
-	int	count = 0;
-	for (int row = 0; row < game->lines; row++)
-	{
-		if (game->board[row][center] == player)
-			count++;
-	}
-	return (count);
-}
-
