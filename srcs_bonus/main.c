@@ -1,14 +1,14 @@
 
 #include "../includes/connect4.h"
 
-int main(int argc, char **argv)
+int bonus_main(char **argv);
+
+int	mandatory_main(char **argv)
 {
 	t_game	game;
 	int		players_move, ai_move;
 	int		winner = 0;
 
-	if (argc != 3)
-		return (ft_putstr_fd("Usage: ./connect4 [lines] [columns]\n", 2), 1);
 	if (init_game(&game, argv[1], argv[2]))
 		return (1);
 	put_header();
@@ -61,4 +61,16 @@ int main(int argc, char **argv)
 	get_next_line(0, CLEAN);
 	ft_free_split(game.board);
 	return (0);
+}
+
+int main(int argc, char **argv)
+{
+	if (argc != 4)
+		return (ft_putstr_fd("Usage: ./connect4_bonus [lines] [columns] <enable graphical>\n", 2), 1);
+	if (ft_strlen(argv[3]) == 3 && ft_strncmp(argv[3], "off", 2) == 0)
+		return (mandatory_main(argv));
+	else if (ft_strlen(argv[3]) == 2 && ft_strncmp(argv[3], "on", 3) == 0)
+		return (bonus_main(argv));
+	else
+		return (ft_putstr_fd("Usage: ./connect4_bonus [lines] [columns] <enable graphical>\n", 2), 1);
 }

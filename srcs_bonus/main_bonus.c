@@ -153,14 +153,13 @@ void	draw_game_winner(char winner, char ai_player, int screen_width, int screen_
     DrawText(text, position.x, position.y, fontSize, winner == ai_player ? WHITE : BLACK);
 }
 
-int main(int argc, char **argv) {
+int bonus_main(char **argv)
+{
 	t_game game;
 
 	// TODO: if graphical is not enabled use the normal one
 	// TODO: Make the limit of columns and lines smaller than current
 	// TODO: Make window size dynamic based on columns and lines
-	if (argc != 3 && argc != 4)
-		return (ft_putstr_fd("Usage: ./connect4_bonus [lines] [columns] <enable graphical>\n", 2), 1);
 	if (init_game(&game, argv[1], argv[2]))
 		return (1);
 
@@ -198,6 +197,7 @@ int main(int argc, char **argv) {
 				break ;
 			}
 			add_move(&game, column, current_player);
+			print_board(&game);
 			if (current_player == PLAYER1)
 				current_player = PLAYER2;
 			else
@@ -217,6 +217,7 @@ int main(int argc, char **argv) {
 				if (IsKeyReleased(KEY_SPACE) || IsKeyReleased(KEY_DOWN))
 				{
 					add_move(&game, column, current_player);
+					print_board(&game);
 					if (is_game_over(&game) != 0)
 					{
 						winner = current_player;
@@ -257,6 +258,8 @@ int main(int argc, char **argv) {
     UnloadRenderTexture(pointer);
     UnloadRenderTexture(chips);
     CloseWindow();
+
+	ft_free_split(game.board);
 
     return 0;
 }

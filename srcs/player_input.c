@@ -20,8 +20,9 @@ int	player_turn(t_game *game)
 	line[ft_strlen(line) - 1] = 0;
 	if (!is_valid_number(line))
 	{
-		ft_putstr_fd("Error: Invalid input\n", 2);
+		ft_putstr_fd("Error: Invalid input '", 2);
 		ft_putstr_fd(line, 2);
+		ft_putstr_fd("'\n", 2);
 		free(line);
 		return (player_turn(game));
 	}

@@ -18,8 +18,8 @@
 # define PLAYER2_COLOR "🟡"
 
 // Maximum number of columns and lines of the terminal window
-# define MAX_COLUMNS 70
-# define MAX_LINES 22
+# define MAX_COLUMNS 40
+# define MAX_LINES 20
 
 // Structure to store the game
 // board: 2D array of characters, that is allocated dynamically

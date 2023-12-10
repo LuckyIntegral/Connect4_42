@@ -48,10 +48,13 @@ NAME_B		= connect4_bonus
 SRCSDIR_B	= srcs_bonus
 SRCS_B		= \
 			${SRCSDIR_B}/main_bonus.c \
-			${SRCSDIR_B}/moves.c \
-			${SRCSDIR_B}/minimax.c \
-			${SRCSDIR_B}/validation_win.c \
-			${SRCSDIR_B}/init.c
+			${SRCSDIR_B}/init_bonus.c \
+			${SRCSDIR_B}/display_bonus.c \
+			${SRCSDIR_B}/minimax_bonus.c \
+			${SRCSDIR_B}/moves_bonus.c \
+			${SRCSDIR_B}/validation_win_bonus.c \
+			${SRCSDIR_B}/player_input_bonus.c \
+			${SRCSDIR_B}/main.c
 
 OBJSDIR_B	= ${SRCSDIR_B}/objs
 OBJS_B      = $(SRCS_B:${SRCSDIR_B}/%.c=${OBJSDIR_B}/%.o)
@@ -91,6 +94,8 @@ fclean				:
 		$(RM) $(OBJSDIR) $(OBJSDIR_B) $(NAME) $(NAME_B)
 
 re					: fclean all
+
+reb					: fclean bonus
 
 -include $(DEPS_B) $(DEPS)
 
