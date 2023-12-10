@@ -174,15 +174,25 @@ int bonus_main(char **argv)
 
 	RenderTexture2D chips = LoadRenderTexture(chips_width, chips_height);
 
-    SetTargetFPS(30);
-
 	char current_player = PLAYER1;
 	char ai_player = PLAYER2;
+	if (time(NULL) % 2 == 0)
+	{
+		current_player = PLAYER1;
+		ai_player = PLAYER2;
+	}
+	else
+	{
+		current_player = PLAYER2;
+		ai_player = PLAYER2;
+	}
+
 	int column = 0;
 
 	bool game_finished = false;
 	char winner = '\0';
 
+    SetTargetFPS(30);
     while (!WindowShouldClose()) {
 		if (!game_finished && current_player == ai_player)
 		{
