@@ -35,23 +35,13 @@ typedef struct	s_game
 }	t_game;
 
 // Functions to manipulate the game board
-int		init_game(t_game *game, char *lines, char *columns);
+void	drop_player(t_game *game, int column, char player);
 void	add_move(t_game *game, int move, char player);
 void	print_board(t_game *game);
+void	put_header(void);
+int		init_game(t_game *game, char *lines, char *columns);
+int		ai_turn(t_game *game, char player);
+int		is_game_over(t_game *game);
 int		is_valid_number(char *str);
 int		player_turn(t_game *game);
-void	drop_player(t_game *game, int column, char player);
-int		is_game_over(t_game *game);
 int		is_draw(t_game *game);
-void	put_header(void);
-
-// Functinos to calculate the next AI move
-int		ai_turn(t_game *game, char player);
-
-// moves.c
-void	add_move(t_game *game, int move, char player);
-
-
-// validation_win.c
-int is_game_over(t_game *game);
-int is_draw(t_game *game);

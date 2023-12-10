@@ -102,7 +102,7 @@ RenderTexture2D	create_position_pointer() {
 		DrawThickLine((Vector2){0,25}, (Vector2){25,0}, 5, DARKGRAY);
 		DrawThickLine((Vector2){25,0}, (Vector2){50,25}, 5, DARKGRAY);
 	EndTextureMode();
-	
+
 	return (pointer);
 }
 
@@ -137,16 +137,16 @@ void	draw_game_winner(char winner, char ai_player, int screen_width, int screen_
     int paddingX = 30;
     int paddingY = 20;
 
-    Vector2 position = { 
-        (screen_width - (textSize.x + paddingX)) / 2, 
-        (screen_height - (textSize.y + paddingY)) / 2 
+    Vector2 position = {
+        (screen_width - (textSize.x + paddingX)) / 2,
+        (screen_height - (textSize.y + paddingY)) / 2
     };
 
     DrawRectangle(
-        position.x - paddingX / 2, 
-        position.y - paddingY / 2, 
-        textSize.x + paddingX * 2, 
-        textSize.y + paddingY, 
+        position.x - paddingX / 2,
+        position.y - paddingY / 2,
+        textSize.x + paddingX * 2,
+        textSize.y + paddingY,
         winner == ai_player ? RED : GREEN
     );
 
@@ -207,6 +207,8 @@ int main(int argc, char **argv) {
 				winner = ai_player;
 				game_finished = true;
 			}
+			if (is_draw(&game))
+				game_finished = true;
 		}
         BeginDrawing();
             ClearBackground(RAYWHITE);
@@ -220,6 +222,8 @@ int main(int argc, char **argv) {
 						winner = current_player;
 						game_finished = true;
 					}
+					if (is_draw(&game))
+						game_finished = true;
 					if (current_player == PLAYER1)
 						current_player = PLAYER2;
 					else

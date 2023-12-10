@@ -63,6 +63,8 @@ DEPS_B      = $(SRCS_B:${SRCSDIR_B}/%.c=${OBJSDIR_B}/%.d)
 
 all					: $(NAME)
 
+bonus				: $(NAME_B)
+
 $(NAME)				: ${OBJS}
 		make --no-print-directory -C ${LIBDIR} all
 		$(CC) $(CFLAGS) -o $@ $^ -L. ${LIBFT}
@@ -71,6 +73,10 @@ $(NAME_B)			: ${OBJS_B}
 		make --no-print-directory -C ${LIBDIR} all
 		make --no-print-directory -C ${RAYLIBDIR} PLATFORM=PLATFORM_DESKTOP
 		$(CC) $(CFLAGS) -o $(NAME_B) $^ $(LINKS) -L. ${LIBFT} ${RAYLIB} -lm
+
+${OBJSDIR_B}/%.o		: ${SRCSDIR_B}/%.c
+		@mkdir -p $(dir $@)
+		${CC} ${CFLAGS} -c $< -o $@ -I ./includes
 
 ${OBJSDIR}/%.o		: ${SRCSDIR}/%.c
 		@mkdir -p $(dir $@)
